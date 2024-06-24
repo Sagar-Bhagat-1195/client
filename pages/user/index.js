@@ -123,7 +123,7 @@ const UserDashboard = () => {
                 <strong style={{ color: "#1976d2" }}>
                   {userData.name.charAt(0).toUpperCase() +
                     userData.name.slice(1)}
-                  s{" "}
+                  0ds{" "}
                   <strong style={{ color: "#000000" }}>User Dashboard</strong>
                 </strong>
               ) : (
