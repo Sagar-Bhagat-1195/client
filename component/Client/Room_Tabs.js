@@ -5,25 +5,25 @@ import { IconButton } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
-import Room_TabPanel from "./Room_TabPanel"; // Import the TabPanel component
+import Room_TabPanel from "./Room_TabPanel"; // Adjust the path to your TabPanel component if needed
 
-const Room_Tabs = (props) => {
-  const { socket } = props;
-  const { rooms } = props;
-  console.log(rooms);
+const Room_Tabs = ({ rooms, socket }) => {
   const [value, setValue] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setScrollPosition(newValue); // Sync scrollPosition with value for tab changes
   };
 
   const handleScrollLeft = () => {
     setScrollPosition(Math.max(0, scrollPosition - 1));
+    setValue(Math.max(0, value - 1)); // Adjust value to match scrollPosition
   };
 
   const handleScrollRight = () => {
     setScrollPosition(Math.min(rooms.length - 1, scrollPosition + 1));
+    setValue(Math.min(rooms.length - 1, value + 1)); // Adjust value to match scrollPosition
   };
 
   return (
@@ -31,7 +31,7 @@ const Room_Tabs = (props) => {
       <h1>Lab Tabs</h1>
       <div style={{ display: "flex", alignItems: "center" }}>
         <IconButton onClick={handleScrollLeft} disabled={scrollPosition === 0}>
-          <ArrowLeftIcon />
+          <ArrowLeftIcon sx={{ fontSize: '3rem', color: "#0d47a1" }} />
         </IconButton>
         <Tabs
           value={value}
@@ -51,7 +51,7 @@ const Room_Tabs = (props) => {
           onClick={handleScrollRight}
           disabled={scrollPosition === rooms.length - 1}
         >
-          <ArrowRightIcon />
+          <ArrowRightIcon sx={{ fontSize: '3rem', color: "#0d47a1" }} />
         </IconButton>
       </div>
       <Room_TabPanel value={value} rooms={rooms} socket={socket} />

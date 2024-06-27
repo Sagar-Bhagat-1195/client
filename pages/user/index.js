@@ -52,7 +52,7 @@ const UserDashboard = () => {
       // Assuming you have stored the auth token in localStorage
       const user_data = JSON.parse(localStorage.getItem("user-data"));
       setUserData(user_data);
-      const response = await axios.get(MAIN_URL+"/room/all", {
+      const response = await axios.get(MAIN_URL + "/room/all", {
         headers: {
           "auth-token": user_data.authToken,
           "Content-Type": "application/json",
@@ -81,7 +81,7 @@ const UserDashboard = () => {
       // console.log(user_data.authToken);
       // console.log(newRoomData);
       const response = await axios.post(
-        MAIN_URL+"/room/addroom",
+        MAIN_URL + "/room/addroom",
         newRoomData,
         {
           headers: {
@@ -123,8 +123,8 @@ const UserDashboard = () => {
                 <strong style={{ color: "#1976d2" }}>
                   {userData.name.charAt(0).toUpperCase() +
                     userData.name.slice(1)}
-                  0ds{" "}
-                  <strong style={{ color: "#000000" }}>User Dashboard</strong>
+                 {"'S "}
+                  <strong style={{ color: "#000000" }}>&apos;S User Dashboard</strong>
                 </strong>
               ) : (
                 <strong style={{ color: "#000000" }}>User Dashboard</strong>

@@ -19,12 +19,12 @@ import DialogContentText from "@mui/material/DialogContentText";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Devices_Tables from "./Devices_Tables";
+import Grid from "@mui/material/Grid";
 
 import EnvironmentVariables from '@/component/env';
 
 // const SUPER_ADMIN_API_KEY = EnvironmentVariables.SUPER_ADMIN_API_KEY;
 const MAIN_URL = EnvironmentVariables.MAIN_URL;
-
 
 const Devices = ({ value, room }) => {
   const [devices, setDevices] = useState([]);
@@ -81,20 +81,15 @@ const Devices = ({ value, room }) => {
         }
       );
 
-      // console.log(response); // Check the structure of the response object
-      // console.log("Update Device Response:", response.data);
       setDevices(response.data.devices);
 
       const selectedDevice = response.data.devices.find(
         (device) => device._id === selectedDevice_Table._id
       );
       if (selectedDevice) {
-        // Found the selected device
         console.log("Found selectedDevice_Table:", selectedDevice);
-        // fetchDevices();
         setSelectedDevice_Table(selectedDevice);
       } else {
-        // Did not find the selected device
         console.log("selectedDevice_Table not found in findRoom.devices.");
       }
     } catch (error) {
@@ -124,12 +119,10 @@ const Devices = ({ value, room }) => {
         }
       );
 
-      // Update the state to remove the deleted device
       setDevices((prevDevices) =>
         prevDevices.filter((device) => device._id !== deviceId)
       );
 
-      // Update the state to reflect any changes made to the deleted device
       const deletedDevice = response.data.deletedDevice;
       if (deletedDevice) {
         setDevices((prevDevices) =>
@@ -145,38 +138,31 @@ const Devices = ({ value, room }) => {
 
   useEffect(() => {
     console.log(devices);
-    // Check if selectedDevice_Table is not null or undefined
     if (selectedDevice_Table && selectedDevice_Table._id) {
-        const selectedDevice = devices.find(
-            (device) => device._id === selectedDevice_Table._id
-        );
-        console.log("................................................");
-        console.log(selectedDevice);
-        if (selectedDevice) {
-            // Found the selected device
-            console.log("Found selectedDevice_Table:", selectedDevice._id);
-            // Call handleSwitchReadMoreClick with the selected device's _id
-            handleSwitchReadMoreClick(selectedDevice._id);
-        } else {
-            // Did not find the selected device
-            setSelectedDevice_Table("");
-            console.log("selectedDevice_Table not found in findRoom.devices.");
-        }
+      const selectedDevice = devices.find(
+        (device) => device._id === selectedDevice_Table._id
+      );
+      console.log("................................................");
+      console.log(selectedDevice);
+      if (selectedDevice) {
+        console.log("Found selectedDevice_Table:", selectedDevice._id);
+        handleSwitchReadMoreClick(selectedDevice._id);
+      } else {
+        setSelectedDevice_Table("");
+        console.log("selectedDevice_Table not found in findRoom.devices.");
+      }
     }
-}, [devices]);
+  }, [devices]);
 
-  //------------------------------------------------------------------------------------------
   const handleUpdateDevice = async (deviceId) => {
     console.log("handleUpdateDevice :");
     try {
       setSelectedDeviceId(deviceId);
-      // Fetch the current device information and populate the form
       const { name, type, state, value, min_value, max_value } = [
         ...devices,
       ].find((device) => device._id === deviceId);
 
       setUpdatedDeviceInfo({ name, type, state, value, min_value, max_value });
-      // console.log(updatedDeviceInfo);
       setUpdateDialogOpen(true);
     } catch (error) {
       console.error("Error updating device:", error);
@@ -206,20 +192,8 @@ const Devices = ({ value, room }) => {
         }
       );
 
-      // Log the response
       console.log("Update Device Response:", response.data.devices);
       setDevices(response.data.devices);
-
-      //------------------------------------------------------------------
-      // Fetch the current device information and populate the form
-      // const { name, type, state, value, min_value, max_value } = [
-      //   ...devices,
-      // ].find((device) => device._id === selectedDevice_Table._id);
-
-      // setSelectedDevice_Table({ name, type, state, value, min_value, max_value });
-      //----------------------------------------------------------------------------------
-      // Assuming findRoom.devices is an array of objects
-
       setUpdateDialogOpen(false);
     } catch (error) {
       console.error("Error updating device:", error);
@@ -228,16 +202,11 @@ const Devices = ({ value, room }) => {
 
   const handleSwitchReadMoreClick = async (deviceId) => {
     try {
-      // Assuming response.data.devices is an array of objects
       const selectedDevice = devices.find((device) => device._id === deviceId);
       if (selectedDevice) {
-        // Found the selected device
         console.log("Found selectedDevice_Table:", selectedDevice);
-        // Fetch devices again if needed
-        // fetchDevices();
         setSelectedDevice_Table(selectedDevice);
       } else {
-        // Did not find the selected device
         console.log("selectedDevice_Table not found in findRoom.devices.");
       }
     } catch (error) {
@@ -253,109 +222,108 @@ const Devices = ({ value, room }) => {
     <>
       <CssBaseline />
       <Container fixed style={{ padding: "20px" }}>
-        <Box display="grid" gridTemplateColumns="repeat(4, 1fr)" gap={2}>
+        <Grid container spacing={2}>
           {devices.map((device, index) => (
-            <Card
-              key={index}
-              variant="outlined"
-              sx={{
-                borderColor: "#1976d2",
-                ...(device._id === selectedDevice_Table._id
-                  ? { bgcolor: "#64b5f6" } //Select
-                  : { bgcolor: "#bbdefb" }),
-              }}
-            >
-              <CardContent>
-                <EditNoteIcon
-                  onClick={() => {
-                    handleUpdateDevice(device._id);
-                    handleSwitchReadMoreClick(device._id);
-                  }}
-                  style={{
-                    color: "#1565c0",
-                    cursor: "pointer",
-                    transition: "color 0.3s ease",
-                  }}
-                />
-                <DeleteSweepIcon
-                  onClick={() => {
-                    handleOpenDeleteConfirmation(device._id);
-                  }}
-                  style={{
-                    color: "#dc3545",
-                    cursor: "pointer",
-                    transition: "color 0.3s ease",
-                  }}
-                />
-                <Typography variant="h6" component="h2">
-                  {device.name}
-                </Typography>
-                <Typography color="textSecondary" gutterBottom>
-                  Type: {device.type}
-                </Typography>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={device.state}
-                      onChange={() => {
-                        console.log("Switch toggled for device:", device);
-                        // handleSwitchReadMoreClick(device);
-                        handleSwitchToggle(device._id, !device.state);
-                      }}
-                    />
-                  }
-                  label={`State: ${device.state ? "On" : "Off"}`}
-                />
-                <Typography color="textSecondary" gutterBottom>
-                  Value: {device.value}
-                </Typography>
-                <Typography color="textSecondary" gutterBottom>
-                  Min Value: {device.min_value}
-                </Typography>
-                <Typography color="textSecondary" gutterBottom>
-                  Max Value: {device.max_value}
-                </Typography>
-                <Button
-                  variant="contained"
-                  style={{ marginTop: "10px" }}
-                  onClick={() => {
-                    console.log("Read More Click:", device, "\n INDEX:", index);
-                    handleSwitchReadMoreClick(device._id);
-                  }}
-                >
-                  Read More
-                </Button>
-              </CardContent>
-            </Card>
+            <Grid item xs={12} sm={6} md={3} lg={2} key={index}>
+              <Card
+                variant="outlined"
+                sx={{
+                  borderColor: "#1976d2",
+                  bgcolor: device._id === selectedDeviceId.deviceId ? "#64b5f6" : "#bbdefb",
+                }}
+              >
+                <CardContent>
+                  <EditNoteIcon
+                    onClick={() => {
+                      handleUpdateDevice(device._id);
+                      handleSwitchReadMoreClick(device._id);
+                    }}
+                    style={{
+                      color: "#1565c0",
+                      cursor: "pointer",
+                      transition: "color 0.3s ease",
+                    }}
+                  />
+                  <DeleteSweepIcon
+                    onClick={() => {
+                      handleOpenDeleteConfirmation(device._id);
+                    }}
+                    style={{
+                      color: "#dc3545",
+                      cursor: "pointer",
+                      transition: "color 0.3s ease",
+                    }}
+                  />
+                  <Typography variant="h6" component="h2">
+                    {device.name}
+                  </Typography>
+                  <Typography color="textSecondary" gutterBottom>
+                    Type: {device.type}
+                  </Typography>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={device.state}
+                        onChange={() => {
+                          console.log("Switch toggled for device:", device);
+                          handleSwitchToggle(device._id, !device.state);
+                        }}
+                      />
+                    }
+                    label={`State: ${device.state ? "On" : "Off"}`}
+                  />
+                  <Typography color="textSecondary" gutterBottom>
+                    Value: {device.value}
+                  </Typography>
+                  <Typography color="textSecondary" gutterBottom>
+                    Min Value: {device.min_value}
+                  </Typography>
+                  <Typography color="textSecondary" gutterBottom>
+                    Max Value: {device.max_value}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    style={{ marginTop: "10px" }}
+                    onClick={() => {
+                      console.log("Read More Click:", device, "\n INDEX:", index);
+                      handleSwitchReadMoreClick(device._id);
+                    }}
+                  >
+                    Read More
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
           ))}
-          <Card variant="outlined" sx={{ borderColor: "#1976d2" }}>
-            <CardContent
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                textAlign: "center",
-              }}
-            >
-              <Typography
-                variant="h6"
-                component="h2"
+          <Grid item xs={12} sm={6} md={3} lg={2}>
+            <Card variant="outlined" sx={{ borderColor: "#1976d2" }}>
+              <CardContent
                 style={{
-                  color: "blue",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   textAlign: "center",
                 }}
               >
-                <AddDeviceForm room={room} fetchDevices={fetchDevices} />
-              </Typography>
-            </CardContent>
-          </Card>
-        </Box>
+                <Typography
+                  variant="h6"
+                  component="h2"
+                  style={{
+                    color: "blue",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    textAlign: "center",
+                  }}
+                >
+                  <AddDeviceForm room={room} fetchDevices={fetchDevices} />
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       </Container>
 
-      {/* Dialog for deleting device */}
       <Dialog
         open={deleteConfirmationOpen}
         onClose={handleCloseDeleteConfirmation}
@@ -382,7 +350,6 @@ const Devices = ({ value, room }) => {
         </DialogActions>
       </Dialog>
 
-      {/* Dialog for updating device */}
       <Dialog open={updateDialogOpen} onClose={handleUpdateDialogClose}>
         <DialogContent>
           <div
@@ -409,17 +376,6 @@ const Devices = ({ value, room }) => {
                 })
               }
             />
-
-            {/* <TextField
-              label="State"
-              value={updatedDeviceInfo.state}
-              onChange={(e) =>
-                setUpdatedDeviceInfo({
-                  ...updatedDeviceInfo,
-                  state: e.target.value,
-                })
-              }
-            /> */}
 
             <FormControlLabel
               control={
@@ -469,8 +425,6 @@ const Devices = ({ value, room }) => {
               }
             />
           </div>
-
-          {/* Add more fields for other device properties */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleUpdateDialogClose} color="primary">
@@ -481,9 +435,7 @@ const Devices = ({ value, room }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Devices_Tables
-        selectedDevice_Table={selectedDevice_Table}
-      ></Devices_Tables>
+      <Devices_Tables selectedDevice_Table={selectedDevice_Table} />
     </>
   );
 };

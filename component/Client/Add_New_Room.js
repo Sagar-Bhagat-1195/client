@@ -44,67 +44,80 @@ const Add_New_Room = ({ socket }) => {
 
   return (
     <>
-      <div>
-        <Box
-          sx={{ display: "flex", justifyContent: "center", marginBottom: 2 }}
-        >
-          <Button variant="contained" onClick={() => setAddingNewRoom(true)}>
-            Add New Room
-          </Button>
-          <Dialog open={addingNewRoom} onClose={handleCancelAddRoom}>
-            <DialogTitle>Add New Room</DialogTitle>
-            <DialogContent>
-              <Formik
-                initialValues={{
-                  name: "",
-                  type: "",
-                }}
-                validationSchema={validationSchema}
-                onSubmit={handleAddNewRoom}
-              >
-                {({ errors, touched, handleChange }) => (
-                  <Form>
-                    <Field
-                      name="name"
-                      as={TextField}
-                      label="Room Name"
-                      variant="outlined"
-                      fullWidth
-                      margin="normal"
-                      error={touched.name && errors.name}
-                      helperText={<ErrorMessage name="name" />}
-                      onChange={(e) => {
-                        handleChange(e); // Call Formik's handleChange
-                      }}
-                    />
-                    <Field
-                      name="type"
-                      as={TextField}
-                      label="Room Type"
-                      variant="outlined"
-                      fullWidth
-                      margin="normal"
-                      error={touched.type && errors.type}
-                      helperText={<ErrorMessage name="type" />}
-                      onChange={(e) => {
-                        handleChange(e); // Call Formik's handleChange
-                      }}
-                    />
-                    <DialogActions>
-                      <Button type="submit" variant="contained">
-                        Add New Room
-                      </Button>
-                      <Button variant="contained" onClick={handleCancelAddRoom}>
-                        Cancel
-                      </Button>
-                    </DialogActions>
-                  </Form>
-                )}
-              </Formik>
-            </DialogContent>
-          </Dialog>
-        </Box>
-      </div>
+    
+
+        <Button variant="contained" onClick={() => setAddingNewRoom(true)}
+          sx={{
+            whiteSpace: "nowrap", 
+            width: "100%",
+            height:"100%",
+          }}>
+          Add New Room
+        </Button>
+        {/* 
+          <Button
+                  variant="contained"
+                  endIcon={<SendIcon />}
+                  sx={{
+                    marginLeft: "auto", // Push the button to the right
+                  }}
+                >
+                  Send
+                </Button> */}
+
+
+        <Dialog open={addingNewRoom} onClose={handleCancelAddRoom}>
+          <DialogTitle>Add New Room</DialogTitle>
+          <DialogContent>
+            <Formik
+              initialValues={{
+                name: "",
+                type: "",
+              }}
+              validationSchema={validationSchema}
+              onSubmit={handleAddNewRoom}
+            >
+              {({ errors, touched, handleChange }) => (
+                <Form>
+                  <Field
+                    name="name"
+                    as={TextField}
+                    label="Room Name"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    error={touched.name && errors.name}
+                    helperText={<ErrorMessage name="name" />}
+                    onChange={(e) => {
+                      handleChange(e); // Call Formik's handleChange
+                    }}
+                  />
+                  <Field
+                    name="type"
+                    as={TextField}
+                    label="Room Type"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    error={touched.type && errors.type}
+                    helperText={<ErrorMessage name="type" />}
+                    onChange={(e) => {
+                      handleChange(e); // Call Formik's handleChange
+                    }}
+                  />
+                  <DialogActions>
+                    <Button type="submit" variant="contained">
+                      Add New Room
+                    </Button>
+                    <Button variant="contained" onClick={handleCancelAddRoom}>
+                      Cancel
+                    </Button>
+                  </DialogActions>
+                </Form>
+              )}
+            </Formik>
+          </DialogContent>
+        </Dialog>
     </>
   );
 };

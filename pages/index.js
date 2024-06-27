@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Room_Tabs from "../component/Client/Room_Tabs"; // Import the LabTabs component
 import Button from "@mui/material/Button";
-import Add_New_Room from "@/component/Client/Add_New_Room";
+// import Add_New_Room from "@/component/Client/Add_New_Room";
 import EnvironmentVariables from '@/component/env';
 
 
@@ -66,8 +66,8 @@ export default function Home() {
                 <strong style={{ color: "#1976d2" }}>
                   {clientData.name.charAt(0).toUpperCase() +
                     clientData.name.slice(1)}
-                  s{" "}
-                  <strong style={{ color: "#000000" }}>Client Dashboard</strong>
+                  {"'S "}
+                  <strong style={{ color: "#000000" }}> Client Dashboard</strong>
                 </strong>
               ) : (
                 <strong style={{ color: "#000000" }}>Client Dashboard</strong>
@@ -75,7 +75,7 @@ export default function Home() {
             </h1>
           </Box>
           {/* Render your other components here, such as Tabs, Dialogs, etc. */}
-          <Add_New_Room socket={socket} />
+          {/* <Add_New_Room socket={socket} /> */}
           <Room_Tabs rooms={rooms} socket={socket} />
         </div>
       </Container>
