@@ -121,7 +121,7 @@ void MakeDeviceAPIRequestInArduino() {
       fixed
       style={{
         border: "2px solid #1976d2",
-        borderRadius: "25px 0",
+       borderRadius: "0 25px",
         marginTop: "25px",
         padding: "10px",
         marginBottom: "25px",

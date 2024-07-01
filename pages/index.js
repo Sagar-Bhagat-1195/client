@@ -8,6 +8,7 @@ import Room_Tabs from "../component/Client/Room_Tabs"; // Import the LabTabs com
 import Button from "@mui/material/Button";
 // import Add_New_Room from "@/component/Client/Add_New_Room";
 import EnvironmentVariables from '@/component/env';
+import { Padding } from "@mui/icons-material";
 
 
 const MAIN_URL = EnvironmentVariables.MAIN_URL;
@@ -58,9 +59,9 @@ export default function Home() {
 
   return (
     <ClientSecure>
-      <Container maxWidth="ls">
+      <Container fixed style={{paddingTop:"25px"}}>
         <div style={{ textAlign: "center" }}>
-          <Box mt={5} mb={3}>
+          <Box>
             <h1>
               {clientData ? (
                 <strong style={{ color: "#1976d2" }}>
